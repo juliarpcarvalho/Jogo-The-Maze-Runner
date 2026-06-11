@@ -1,6 +1,6 @@
 import pygame
 import random
-      ## Requisito 1: Inicialize o tabuleiro como mostrado na figura
+
 pygame.init()
 pygame.font.init()
 largura = 840
@@ -52,6 +52,8 @@ y = 0
 jogo_iniciado = False
 fim = False
 running = True
+
+      ## Requisito 1: Inicialize o tabuleiro como mostrado na figura
 
 while running:
     screen.fill((208, 243, 254))
@@ -143,7 +145,7 @@ while running:
                     a = f'Jogador {jogadores[turno]["cor"]} está preso e perdeu a vez!'
                     turno = (turno + 1) % 2
                     continue
-                
+
                       ## Requisito 3: Navegação dos jogadores no tabuleiro
 
                 y = random.randint(1,6)
