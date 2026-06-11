@@ -184,6 +184,9 @@ while running:
                         a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde, mas já está com vida máxima!'
                     else:
                         a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde e ganhou 1 vida!'
+                        
+                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'BRANCO':
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa branca e não teve consequências!'
 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AZUL':
                     a = f'Jogador {jogadores[turno]["cor"]} caiu na casa azul e ganhou uma jogada extra!'
@@ -191,8 +194,6 @@ while running:
                         turno = 1
                     else:
                         turno = 0
-                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'BRANCO':
-                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa branca e não teve consequências!'
 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AMARELO':
                     jogadores_presos[turno] = 1
