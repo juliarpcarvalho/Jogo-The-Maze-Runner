@@ -1,6 +1,6 @@
 import pygame
 import random
-
+      ## Requisito 1: Inicialize o tabuleiro como mostrado na figura
 pygame.init()
 pygame.font.init()
 largura = 840
@@ -117,6 +117,8 @@ while running:
             if eventos.key == pygame.K_ESCAPE and fim and jogo_iniciado:
                 running = False
 
+       ## Requisito 2: Defina a ordem dos jogadores
+
             if eventos.key == pygame.K_SPACE and not jogo_iniciado and not fim:
                 s1 = random.randint(1,6) + random.randint(1,6)
                 s2 = random.randint(1,6) + random.randint(1,6) 
@@ -135,14 +137,19 @@ while running:
             if eventos.key == pygame.K_RETURN and jogo_iniciado and not fim:
                 b = ''
                 c = ''
+                      ## Requisito 4: Ações sobre o jogador à medida que navega 
                 if jogadores_presos[turno] > 0:
                     jogadores_presos[turno] -= 1
                     a = f'Jogador {jogadores[turno]["cor"]} está preso e perdeu a vez!'
                     turno = (turno + 1) % 2
                     continue
                 
+                      ## Requisito 3: Navegação dos jogadores no tabuleiro
+
                 y = random.randint(1,6)
                 jogadores[turno]['posicao'] += y
+
+       ## Requisito 5: Impressão resultado do jogo: Jogador vencedor e quantidade de pontos de vida restantes
 
                 if jogadores[turno]['posicao'] >= 27:
                     jogadores[turno]['posicao'] = 27
@@ -150,42 +157,44 @@ while running:
                     fim = True   
                 jogadores[turno]['pos'] = posicoes[jogadores[turno]['posicao']]
 
+       ## Requisito 4: Ações sobre o jogador à medida que navega 
 
                 if cores_tabuleiro[jogadores[turno]['posicao']] == 'VERMELHO':
                     jogadores[turno]['vida'] -= 3
                     if jogadores[turno]['vida'] <= 0:
                         jogadores[turno]['vida'] = 0
+
+                            ## Requisito 5: Impressão resultado do jogo: Jogador vencedor e quantidade de pontos de vida restantes
+
                         a = f'Jogador {jogadores[turno]["cor"]} perdeu! Jogador {jogadores[(turno + 1) % 2]["cor"]} venceu! ESC para sair ou R para reiniciar.'
                         fim = True
                     else:
-                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa vermelha. Perdeu 3 vidas!'
-                
+                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa vermelha e perdeu 3 vidas!'
+                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'PRETO':
+                    jogadores[turno]['posicao'] = 0
+                    jogadores[turno]['pos'] = posicoes[0]
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa preta e voltou para o início!'
+
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'VERDE':
                     jogadores[turno]['vida'] += 1
                     if jogadores[turno]['vida'] >= 10:
                         jogadores[turno]['vida'] = 10
                         a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde, mas já está com vida máxima!'
                     else:
-                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde. Ganhou 1 vida!'
-                
-                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'PRETO':
-                    jogadores[turno]['posicao'] = 0
-                    jogadores[turno]['pos'] = posicoes[0]
-                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa preta. Voltou para o início!'
+                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde e ganhou 1 vida!'
 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AZUL':
-                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa azul. Ganhou uma jogada extra!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa azul e ganhou uma jogada extra!'
                     if turno == 0:
                         turno = 1
                     else:
                         turno = 0
-                
+                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'BRANCO':
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa branca e não teve consequências!'
+
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AMARELO':
                     jogadores_presos[turno] = 1
-                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa amarela. Ficou preso por um turno!'
-
-                elif cores_tabuleiro[jogadores[turno]['posicao']] == 'BRANCO':
-                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa branca. Sem consequências!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa amarela e ficou preso por um turno!'
 
                 if not fim:
                     turno = (turno + 1) % 2
