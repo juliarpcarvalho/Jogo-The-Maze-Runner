@@ -30,17 +30,17 @@ cores_tabuleiro = {
 }
 
 jog1={  
-    'vida':10, 
+    'vida': 10, 
     'posicao': 0,
-    'pos':posicoes[0], 
-    'cor':'vermelho'
+    'pos': posicoes[0], 
+    'cor': 'vermelho'
 }
 
 jog2={
-    'vida':10, 
-    'posicao':0,
-    'pos':posicoes[0], 
-    'cor':'azul'
+    'vida': 10, 
+    'posicao': 0,
+    'pos': posicoes[0], 
+    'cor': 'azul'
 }
 
 jogadores_presos=[0,0]
@@ -155,7 +155,7 @@ while running:
                     jogadores[turno]['vida'] -= 3
                     if jogadores[turno]['vida'] <= 0:
                         jogadores[turno]['vida'] = 0
-                        a = f'Jogador {jogadores[turno]["cor"]} perdeu todas as vidas! Pressione ESC para sair ou R para reiniciar.'
+                        a = f'Jogador {jogadores[turno]["cor"]} perdeu! Jogador {jogadores[(turno + 1) % 2]["cor"]} venceu! ESC para sair ou R para reiniciar.'
                         fim = True
                     else:
                         a = f'Jogador {jogadores[turno]["cor"]} caiu na casa vermelha. Perdeu 3 vidas!'
