@@ -1,6 +1,8 @@
 import pygame
 import random
 
+## Inicializa o pygame, o jogo com as proporções da tela, nome do jogo, fonte, as respectivas posições,
+## as cores de cada casa do tabuleiro, os jogadores com suas respectivas vidas, posições e cores e as variáveis de controle de jogo.
 pygame.init()
 pygame.font.init()
 largura=840
@@ -10,7 +12,7 @@ pygame.display.set_caption("Jogo Maze Runner")
 
 colour = (255, 255, 255)
 fonte = pygame.font.SysFont("timesnewroman", 24, bold=False, italic=False)
-x='Pressione espaço'
+x='Pressione espaço para iniciar o jogo.'
 a=''
 b=''
 
@@ -37,7 +39,8 @@ y=0
 jogo_iniciado=False
 fim=False
 running=True
-
+## O loop que define o jogo, que determina a cor de fundo, onde desenha o tabuleiro, escreve as informações do jogo
+## (tal qual o início e o fim do tabuleiro, a vida dos jogadores, o resultado do dado e as mensagens de controle do jogo) e desenha o formato dos jogadores.
 while running:
     screen.fill((208, 243, 254))
     pygame.draw.rect(screen, (0, 0, 0), (20, 50, 80, 80))#preto
@@ -79,13 +82,12 @@ while running:
 
     pygame.draw.circle(screen, (193, 27, 27), (jog1['pos'][0]+25,jog1['pos'][1]+25), 15)
     pygame.draw.circle(screen, (29, 138, 155), (jog2['pos'][0]+25,jog2['pos'][1]+60), 15)
-
+## 
     for eventos in pygame.event.get():
         if eventos.type == pygame.QUIT:
             running=False
 
         if eventos.type == pygame.KEYDOWN:
-
             if eventos.key == pygame.K_r  and  fim and jogo_iniciado:
                     jog1['pos'] = posicoes[0]
                     jog2['pos'] = posicoes[0]
@@ -114,10 +116,10 @@ while running:
                     jogadores=[jog1, jog2]
                 else:
                     jogadores=[jog2, jog1]
-                x=f'Jogador {jogadores[0]["cor"]} começa. Clique em a para continuar'
+                x=f'Jogador {jogadores[0]["cor"]} começa. Clique em espaço para continuar'
                 jogo_iniciado=True
 
-            if eventos.key == pygame.K_a and jogo_iniciado and not fim:
+            if eventos.key == pygame.K_RETURN and jogo_iniciado and not fim:
                 a = ''
                 b = ''
                 if jogadores_presos[turno] > 0:
