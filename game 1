@@ -1,24 +1,25 @@
 import pygame
 import random
 
-## Inicializa o pygame, o jogo com as proporções da tela, nome do jogo, fonte, as respectivas posições,
-## as cores de cada casa do tabuleiro, os jogadores com suas respectivas vidas, posições e cores e as variáveis de controle de jogo.
 pygame.init()
 pygame.font.init()
-largura=840
-altura=700
-screen=pygame.display.set_mode((largura,altura))
-pygame.display.set_caption("Jogo Maze Runner")
+largura = 840
+altura = 700
+screen = pygame.display.set_mode((largura,altura))
+pygame.display.set_caption("The Maze Runner")
 
 colour = (255, 255, 255)
-fonte = pygame.font.SysFont("timesnewroman", 24, bold=False, italic=False)
-x='Pressione espaço para iniciar o jogo.'
-a=''
-b=''
+fonte = pygame.font.SysFont("timesnewroman", 24, bold = False, italic = False)
+a = 'Pressione espaço para sortear quem começa!'
+b = ''
+c = ''
 
-posicoes = {0:  (20, 50),1:  (100, 50),2:  (180, 50),3:  (260, 50),4:  (340, 50),5:  (420, 50),6:  (500, 50),7:  (580, 50),8:  (660, 50),
-            9:  (740, 50),10: (740, 130),11: (740, 210),12: (740, 290),13: (740, 370),14: (740, 450),15: (740, 530),16: (660, 530),17: (580, 530),
-            18: (500, 530),19: (420, 530),20: (340, 530),21: (260, 530),22: (180, 530),23: (100, 530),24: (20, 530),25: (20, 450),26: (20, 370),27: (20, 290)}
+posicoes = {
+        0:  (20, 50), 1:  (100, 50), 2:  (180, 50), 3:  (260, 50), 4:  (340, 50), 5:  (420, 50), 6:  (500, 50), 7:  (580, 50), 8:  (660, 50),
+        9:  (740, 50), 10: (740, 130), 11: (740, 210), 12: (740, 290), 13: (740, 370), 14: (740, 450), 15: (740, 530), 16: (660, 530), 17: (580, 530),
+        18: (500, 530), 19: (420, 530), 20: (340, 530), 21: (260, 530), 22: (180, 530), 23: (100, 530), 24: (20, 530), 25: (20, 450), 26: (20, 370), 27: (20, 290)
+}
+
 cores_tabuleiro = {
     0: "INICIO", 1: "BRANCO", 2: "VERMELHO", 3: "VERDE", 4: "BRANCO", 
     5: "AZUL", 6: "BRANCO", 7: "AMARELO", 8: "BRANCO", 9: "VERMELHO", 
@@ -27,67 +28,79 @@ cores_tabuleiro = {
     20: "VERMELHO", 21: "VERDE", 22: "BRANCO", 23: "AZUL", 24: "VERMELHO", 
     25: "AMARELO", 26: "VERDE", 27: "FIM"
 }
-jog1={'vida':10, 'posicao':0, 'pos':posicoes[0], 'cor':'vermelho'}
-jog2={'vida':10, 'posicao':0, 'pos':posicoes[0], 'cor':'azul'}
+
+jog1={  
+    'vida':10, 
+    'posicao': 0,
+    'pos':posicoes[0], 
+    'cor':'vermelho'
+}
+
+jog2={
+    'vida':10, 
+    'posicao':0,
+    'pos':posicoes[0], 
+    'cor':'azul'
+}
 
 jogadores_presos=[0,0]
 
-jogadores=[jog1, jog2]
-turno=0
-y=0
+jogadores = [jog1, jog2]
+turno = 0
+y = 0
 
-jogo_iniciado=False
-fim=False
-running=True
-## O loop que define o jogo, que determina a cor de fundo, onde desenha o tabuleiro, escreve as informações do jogo
-## (tal qual o início e o fim do tabuleiro, a vida dos jogadores, o resultado do dado e as mensagens de controle do jogo) e desenha o formato dos jogadores.
+jogo_iniciado = False
+fim = False
+running = True
+
 while running:
     screen.fill((208, 243, 254))
-    pygame.draw.rect(screen, (0, 0, 0), (20, 50, 80, 80))#preto
-    pygame.draw.rect(screen, (225,225,225), (100, 50, 80, 80))#branco
-    pygame.draw.rect(screen, (225, 0, 0), (180, 50, 80, 80))#vermelho
-    pygame.draw.rect(screen, (0, 225, 0), (260, 50, 80, 80))#verde
-    pygame.draw.rect(screen, (225, 225, 225), (340, 50, 80, 80))#branco
+    pygame.draw.rect(screen, (0, 0, 0), (20, 50, 80, 80))  #preto
+    pygame.draw.rect(screen, (225,225,225), (100, 50, 80, 80))  #branco
+    pygame.draw.rect(screen, (225, 0, 0), (180, 50, 80, 80))  #vermelho
+    pygame.draw.rect(screen, (0, 225, 0), (260, 50, 80, 80))  #verde
+    pygame.draw.rect(screen, (225, 225, 225), (340, 50, 80, 80))  #branco
     pygame.draw.rect(screen, (0, 0, 225), (420, 50, 80, 80))  #azul
     pygame.draw.rect(screen, (225, 225, 225), (500, 50, 80, 80))  #branco
     pygame.draw.rect(screen, (225, 225, 0), (580, 50, 80, 80))  #amarelo
-    pygame.draw.rect(screen, (225, 225, 225), (660, 50, 80, 80))  # branco
+    pygame.draw.rect(screen, (225, 225, 225), (660, 50, 80, 80))  #branco
     pygame.draw.rect(screen, (225, 0, 0), (740, 50, 80, 80))  #vermelho
-    pygame.draw.rect(screen, (0, 225, 0), (740, 130, 80, 80))  # verde
-    pygame.draw.rect(screen, (0, 0, 0), (740, 210, 80, 80))  # preto
-    pygame.draw.rect(screen, (0, 0, 225), (740, 290, 80, 80))  # azul
-    pygame.draw.rect(screen, (225, 225, 225), (740, 370, 80, 80))  # branco
-    pygame.draw.rect(screen, (225, 225, 225), (740, 450, 80, 80))  # branco
-    pygame.draw.rect(screen, (225, 0, 0), (740, 530, 80, 80))  # vermelho
-    pygame.draw.rect(screen, (0, 225, 0), (660, 530, 80, 80))  # verde
-    pygame.draw.rect(screen, (225, 225, 225), (580, 530, 80, 80))  # branco
-    pygame.draw.rect(screen, (225, 225, 0), (500, 530, 80, 80))  # amarelo
+    pygame.draw.rect(screen, (0, 225, 0), (740, 130, 80, 80))  #verde
+    pygame.draw.rect(screen, (0, 0, 0), (740, 210, 80, 80))  #preto
+    pygame.draw.rect(screen, (0, 0, 225), (740, 290, 80, 80))  #azul
+    pygame.draw.rect(screen, (225, 225, 225), (740, 370, 80, 80))  #branco
+    pygame.draw.rect(screen, (225, 225, 225), (740, 450, 80, 80))  #branco
+    pygame.draw.rect(screen, (225, 0, 0), (740, 530, 80, 80))  #vermelho
+    pygame.draw.rect(screen, (0, 225, 0), (660, 530, 80, 80))  #verde
+    pygame.draw.rect(screen, (225, 225, 225), (580, 530, 80, 80))  #branco
+    pygame.draw.rect(screen, (225, 225, 0), (500, 530, 80, 80))  #amarelo
     pygame.draw.rect(screen, (225, 225, 225), (420, 530, 80, 80))  #branco
-    pygame.draw.rect(screen, (225, 0, 0), (340, 530, 80, 80))  # vermelho
-    pygame.draw.rect(screen, (0, 225, 0), (260, 530, 80, 80))  # verde
-    pygame.draw.rect(screen, (225, 225, 225), (180, 530, 80, 80))  # branco
-    pygame.draw.rect(screen, (0, 0, 225), (100, 530, 80, 80))  # azul
-    pygame.draw.rect(screen, (225, 0, 0), (20, 530, 80, 80))  # vermelho
-    pygame.draw.rect(screen, (225, 225, 0), (20, 450, 80, 80))  # amarelo
-    pygame.draw.rect(screen, (0, 225, 0), (20, 370, 80, 80))  # vermelho
-    pygame.draw.rect(screen, (0, 0, 0), (20, 290, 80, 80))  # preto
+    pygame.draw.rect(screen, (225, 0, 0), (340, 530, 80, 80))  #vermelho
+    pygame.draw.rect(screen, (0, 225, 0), (260, 530, 80, 80))  #verde
+    pygame.draw.rect(screen, (225, 225, 225), (180, 530, 80, 80))  #branco
+    pygame.draw.rect(screen, (0, 0, 225), (100, 530, 80, 80))  #azul
+    pygame.draw.rect(screen, (225, 0, 0), (20, 530, 80, 80))  #vermelho
+    pygame.draw.rect(screen, (225, 225, 0), (20, 450, 80, 80))  #amarelo
+    pygame.draw.rect(screen, (0, 225, 0), (20, 370, 80, 80))  #vermelho
+    pygame.draw.rect(screen, (0, 0, 0), (20, 290, 80, 80))  #preto
 
     screen.blit(fonte.render('Início', True,colour), (20, 50))
     screen.blit(fonte.render('Fim', True,colour), (20,290))
-    screen.blit(fonte.render(x, True,(0,0,0)), (20,10))
+    screen.blit(fonte.render(a, True,(0,0,0)), (20,10))
     screen.blit(fonte.render(f'Vida do jogador {jog1["cor"]}: {jog1["vida"]} | Vida do jogador {jog2["cor"]}: {jog2["vida"]}', True,(0,0,0)), (20,650))
     screen.blit(fonte.render(f'Dado: {y}', True,(0,0,0)), (720,650))
-    screen.blit(fonte.render(a, True,(0,0,0)), (300, 325))
-    screen.blit(fonte.render(b, True,(0,0,0)), (300, 350))
+    screen.blit(fonte.render(b, True,(0,0,0)), (300, 325))
+    screen.blit(fonte.render(c, True,(0,0,0)), (300, 350))
 
     pygame.draw.circle(screen, (193, 27, 27), (jog1['pos'][0]+25,jog1['pos'][1]+25), 15)
     pygame.draw.circle(screen, (29, 138, 155), (jog2['pos'][0]+25,jog2['pos'][1]+60), 15)
-## 
+
     for eventos in pygame.event.get():
         if eventos.type == pygame.QUIT:
-            running=False
+            running = False
 
         if eventos.type == pygame.KEYDOWN:
+
             if eventos.key == pygame.K_r  and  fim and jogo_iniciado:
                     jog1['pos'] = posicoes[0]
                     jog2['pos'] = posicoes[0]
@@ -96,13 +109,13 @@ while running:
                     jog1['posicao'] = 0
                     jog2['posicao'] = 0
                     jogadores_presos = [0,0]
-                    y=0
-                    x='Pressione espaço para iniciar o jogo'
-                    jogo_iniciado=False
-                    fim=False
+                    y = 0
+                    a = 'Pressione espaço para sortear quem começa!'
+                    jogo_iniciado = False
+                    fim = False
 
             if eventos.key == pygame.K_ESCAPE and fim and jogo_iniciado:
-                running=False
+                running = False
 
             if eventos.key == pygame.K_SPACE and not jogo_iniciado and not fim:
                 s1 = random.randint(1,6) + random.randint(1,6)
@@ -110,21 +123,21 @@ while running:
                 while s1 == s2:
                     s1 = random.randint(1,6) + random.randint(1,6)
                     s2 = random.randint(1,6) + random.randint(1,6)
-                a=f'Jogador {jog1["cor"]} tirou {s1}.'
-                b=f'Jogador {jog2["cor"]} tirou {s2}.'    
+                b = f'Jogador {jog1["cor"]} tirou {s1}.'
+                c = f'Jogador {jog2["cor"]} tirou {s2}.'    
                 if s1 > s2:
                     jogadores=[jog1, jog2]
                 else:
                     jogadores=[jog2, jog1]
-                x=f'Jogador {jogadores[0]["cor"]} começa. Clique em espaço para continuar'
+                a = f'Jogador {jogadores[0]["cor"]} começa. Clique em Enter para continuar'
                 jogo_iniciado=True
 
             if eventos.key == pygame.K_RETURN and jogo_iniciado and not fim:
-                a = ''
                 b = ''
+                c = ''
                 if jogadores_presos[turno] > 0:
                     jogadores_presos[turno] -= 1
-                    x=f'Jogador {jogadores[turno]["cor"]} está preso e perdeu a vez!'
+                    a = f'Jogador {jogadores[turno]["cor"]} está preso e perdeu a vez!'
                     turno = (turno + 1) % 2
                     continue
                 
@@ -133,8 +146,8 @@ while running:
 
                 if jogadores[turno]['posicao'] >= 27:
                     jogadores[turno]['posicao'] = 27
-                    x=f'Jogador {jogadores[turno]["cor"]} venceu! Pressione ESC para sair ou R para reiniciar.' 
-                    fim=True   
+                    a = f'Jogador {jogadores[turno]["cor"]} venceu! Pressione ESC para sair ou R para reiniciar.' 
+                    fim = True   
                 jogadores[turno]['pos'] = posicoes[jogadores[turno]['posicao']]
 
 
@@ -142,26 +155,26 @@ while running:
                     jogadores[turno]['vida'] -= 3
                     if jogadores[turno]['vida'] <= 0:
                         jogadores[turno]['vida'] = 0
-                        x=f'Jogador {jogadores[turno]["cor"]} perdeu todas as vidas! Pressione ESC para sair ou R para reiniciar.'
-                        fim=True
+                        a = f'Jogador {jogadores[turno]["cor"]} perdeu todas as vidas! Pressione ESC para sair ou R para reiniciar.'
+                        fim = True
                     else:
-                        x=f'Jogador {jogadores[turno]["cor"]} caiu na casa vermelha e perdeu 3 vidas!'
+                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa vermelha. Perdeu 3 vidas!'
                 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'VERDE':
                     jogadores[turno]['vida'] += 1
                     if jogadores[turno]['vida'] >= 10:
                         jogadores[turno]['vida'] = 10
-                        x=f'Jogador {jogadores[turno]["cor"]} caiu na casa verde, mas já está com vida máxima!'
+                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde, mas já está com vida máxima!'
                     else:
-                        x=f'Jogador {jogadores[turno]["cor"]} caiu na casa verde e ganhou 1 vida!'
+                        a = f'Jogador {jogadores[turno]["cor"]} caiu na casa verde. Ganhou 1 vida!'
                 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'PRETO':
                     jogadores[turno]['posicao'] = 0
                     jogadores[turno]['pos'] = posicoes[0]
-                    x=f'Jogador {jogadores[turno]["cor"]} caiu na casa preta e voltou para o início!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa preta. Voltou para o início!'
 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AZUL':
-                    x=f'Jogador {jogadores[turno]["cor"]} caiu na casa azul e ganhou uma jogada extra!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa azul. Ganhou uma jogada extra!'
                     if turno == 0:
                         turno = 1
                     else:
@@ -169,10 +182,10 @@ while running:
                 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'AMARELO':
                     jogadores_presos[turno] = 1
-                    x=f'Jogador {jogadores[turno]["cor"]} caiu na casa amarela e ficou preso por um turno!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa amarela. Ficou preso por um turno!'
 
                 elif cores_tabuleiro[jogadores[turno]['posicao']] == 'BRANCO':
-                    x=f'Jogador {jogadores[turno]["cor"]} caiu na casa branca e não acontece nada!'
+                    a = f'Jogador {jogadores[turno]["cor"]} caiu na casa branca. Sem consequências!'
 
                 if not fim:
                     turno = (turno + 1) % 2
